@@ -21,7 +21,7 @@ var can_wall : bool = true
 var cut_jump = 100
 var last_dir : float
 
-enum states{move, jump, wall, slide, death}
+enum states{move, jump}
 var state = states.move
 
 var vel : Vector2 = Vector2.ZERO
@@ -36,15 +36,21 @@ func _physics_process(delta: float) -> void:
 			move(delta)
 		states.jump:
 			jump(delta)
-		states.wall:
-			wall(delta)
+
 			
 			
 	move_and_slide()
 
 
 func move(delta):
-	print("state move")
+	
+	print(velocity.x)
+
+	if Input.get_axis("left","right"):
+		$AnimatedSprite2D.play("walk")
+	else:
+		$AnimatedSprite2D.play("idle")
+		
 	if not is_on_floor():
 		state = states.jump
 		
@@ -58,8 +64,10 @@ func move(delta):
 	if direction:
 		#velocity.x = direction * speed
 		if velocity.x > 0:
+			$AnimatedSprite2D.flip_h = true
 			last_dir = 1
 		elif velocity.x < 0:
+			$AnimatedSprite2D.flip_h = false
 			last_dir = -1
 	#else:
 		#velocity.x = move_toward(velocity.x, 0, speed)
@@ -76,42 +84,20 @@ func apply_traction(delta):
 func apply_friction(delta):
 	velocity.x -= velocity.x * friction * delta
 	pass
-	
-func wall(delta):
-	print("state wall")
-	# Se soltar a tecla volta pra o jump
-	
-	if Input.get_axis("left","right") != last_dir or !is_on_wall_only():
-		state = states.jump
-		
-	if Input.is_action_just_pressed("jump") and can_jump():
-		velocity.x = 3000 * -Input.get_axis("left","right") 
-		$Timer_wall.start(0.3)
-		can_wall = false
-		call_wall_jump()
-	
-	velocity = wall_gravity * delta
-
-	if is_on_floor():
-		state = states.move
-	pass
-
 
 func jump(delta):
 	print("state jump")
 	# Volta pra o Move
 	if is_on_floor():
+		$AnimatedSprite2D.play("idle")
 		state = states.move
 	
+
 	# Pulo estilo Mario, se o player sobe é uma velocidade, se ele desce é outra
 	if velocity.y < 0:
 		velocity += gravity * delta
 	else:
 		velocity += (gravity * gravity_down) * delta
-		# Chama o wall state
-		if Input.get_axis("left","right") == last_dir and is_on_wall_only() and can_wall:
-			current_jumps += 1
-			state = states.wall
 			
 	# Se o player solta o botao ele corta o jump
 	if Input.is_action_just_released("jump"): 
@@ -136,6 +122,7 @@ func jump(delta):
 		call_jump()
 
 func call_jump():
+		$AnimatedSprite2D.play("jump")
 		current_jumps -= 1
 		velocity.y = jump_speed
 		state = states.jump

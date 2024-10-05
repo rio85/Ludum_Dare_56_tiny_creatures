@@ -26,9 +26,9 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("dash"):
 		if state == states.idle:
-			state = states.move
+			change_to_move()
 		elif  state == states.move:
-			state = states.idle
+			change_to_idle()
 
 
 
@@ -41,9 +41,11 @@ func idle():
 
 	
 func change_to_idle():
+	$AnimatedSprite2D.play("idle")
 	state = states.idle
 	pass
 	
 func change_to_move():
+	$AnimatedSprite2D.play("walk")
 	state = states.move
 	pass
