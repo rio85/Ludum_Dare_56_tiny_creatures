@@ -1,0 +1,122 @@
+[gd_scene load_steps=9 format=3 uid="uid://cjf4mlnc0h26i"]
+
+[ext_resource type="PackedScene" uid="uid://cj4q8beomru57" path="res://scenes/player.tscn" id="1_1hmnj"]
+[ext_resource type="Texture2D" uid="uid://bphfbkrcb6v2m" path="res://icon.svg" id="2_uyjkm"]
+[ext_resource type="PackedScene" uid="uid://c6dhkcitl0xqp" path="res://scenes/tiny_creature_script.tscn" id="3_bm4tn"]
+[ext_resource type="PackedScene" uid="uid://bsn56s3mitjun" path="res://scenes/platform_template.tscn" id="4_s2p4y"]
+[ext_resource type="PackedScene" uid="uid://43y2t6vtj5rt" path="res://scenes/switch_class.tscn" id="5_vjjp8"]
+[ext_resource type="PackedScene" uid="uid://crp8hi4id12qr" path="res://scenes/platform_lateral.tscn" id="6_1mn7i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uys3m"]
+size = Vector2(126, 117)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_btotr"]
+size = Vector2(136, 1161)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="player" parent="." instance=ExtResource("1_1hmnj")]
+
+[node name="Camera2D" type="Camera2D" parent="player"]
+zoom = Vector2(0.44, 0.44)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-1, 319)
+scale = Vector2(31.7205, 0.874744)
+collision_layer = 3
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("2_uyjkm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 0.5)
+shape = SubResource("RectangleShape2D_uys3m")
+
+[node name="Background" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Background"]
+motion_scale = Vector2(0.8, 0.8)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxLayer"]
+modulate = Color(0.0701524, 0.0701524, 0.0701524, 1)
+self_modulate = Color(0.138034, 0.138034, 0.138034, 1)
+position = Vector2(0, -2.50003)
+scale = Vector2(1, 12.1328)
+texture = ExtResource("2_uyjkm")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="Background"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxLayer2"]
+modulate = Color(0.471376, 0.471375, 0.471375, 1)
+self_modulate = Color(0.334122, 0.334123, 0.334122, 1)
+position = Vector2(-216.5, -2.50003)
+scale = Vector2(0.804688, 12.1328)
+texture = ExtResource("2_uyjkm")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/ParallaxLayer2"]
+modulate = Color(0.625597, 0.625597, 0.625597, 1)
+self_modulate = Color(0.138034, 0.138034, 0.138034, 1)
+position = Vector2(817, -2.50003)
+scale = Vector2(0.703125, 12.1328)
+texture = ExtResource("2_uyjkm")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Background/ParallaxLayer2"]
+modulate = Color(0.552956, 0.552956, 0.552955, 1)
+self_modulate = Color(0.138034, 0.138034, 0.138034, 1)
+position = Vector2(-1048, -2.50003)
+scale = Vector2(0.625, 12.1328)
+texture = ExtResource("2_uyjkm")
+
+[node name="Foreground" type="ParallaxBackground" parent="."]
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(1245, -32)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(0, -202.5)
+shape = SubResource("RectangleShape2D_btotr")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
+position = Vector2(0, -176)
+scale = Vector2(1, 8.59375)
+texture = ExtResource("2_uyjkm")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(897, -316)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(0, -202.5)
+shape = SubResource("RectangleShape2D_btotr")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3"]
+position = Vector2(0, -176)
+scale = Vector2(1, 8.59375)
+texture = ExtResource("2_uyjkm")
+
+[node name="tiny_creature" parent="." instance=ExtResource("3_bm4tn")]
+position = Vector2(705, 0)
+direction = -1
+
+[node name="tiny_creature2" parent="." instance=ExtResource("3_bm4tn")]
+position = Vector2(651, -57)
+direction = -1
+
+[node name="tiny_creature3" parent="." instance=ExtResource("3_bm4tn")]
+position = Vector2(730, -46)
+direction = -1
+
+[node name="platform_template" parent="." instance=ExtResource("4_s2p4y")]
+position = Vector2(-729, 270)
+
+[node name="SwitchClass" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_vjjp8")]
+position = Vector2(-425, 263)
+target = [NodePath("../platform_template"), NodePath("../AnimatableBody2D")]
+
+[node name="AnimatableBody2D" parent="." instance=ExtResource("6_1mn7i")]
+position = Vector2(-1451, -159)
